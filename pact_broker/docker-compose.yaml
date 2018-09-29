@@ -1,0 +1,25 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  database:
+    image: pact-database
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_PASSWORD:password
+    - POSTGRES_USER:pactbrokeruser
+
+
+  broker:
+    image: dius/pact-broker
+    ports:
+    - 8080:80
+    links:
+    - database
+    environment:
+      PACT_BROKER_DATABASE_USERNAME: pactbrokeruser
+      PACT_BROKER_DATABASE_PASSWORD: password
+      PACT_BROKER_DATABASE_HOST: database
+      PACT_BROKER_DATABASE_NAME: postgres
