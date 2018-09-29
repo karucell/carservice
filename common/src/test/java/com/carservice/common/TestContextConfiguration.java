@@ -1,9 +1,9 @@
 package com.carservice.common;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration
-@ComponentScan(basePackageClasses = {CommonBeans.class})
+@Import({CommonBeans.class})
 public class TestContextConfiguration {
 }
