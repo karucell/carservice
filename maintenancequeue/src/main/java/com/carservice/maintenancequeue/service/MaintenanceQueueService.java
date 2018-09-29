@@ -9,10 +9,6 @@ import com.carservice.maintenancequeue.resource.model.Maintenance;
 @Service
 public class MaintenanceQueueService {
 
-    public List<Maintenance> fetchMaintenances() {
-        return null;
-    }
-
     public String addMaintenance(String carId, String procedureId) {
         return null;
     }
@@ -24,4 +20,9 @@ public class MaintenanceQueueService {
     public Maintenance completeMaintenance(String maintenanceId) {
         return null;
     }
+
+    public List<Maintenance> fetchMaintenances() {
+        return null;
+    }
+
 }

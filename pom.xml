@@ -13,10 +13,9 @@
 
     <modules>
         <module>common</module>
-        <module>contracts</module>
         <module>customercars</module>
         <module>mechanic</module>
-        <module>serviceprocedures</module>
+        <module>maintenanceprocedures</module>
         <module>maintenancequeue</module>
     </modules>
 
