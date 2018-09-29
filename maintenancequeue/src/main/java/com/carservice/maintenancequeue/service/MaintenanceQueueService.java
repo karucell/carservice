@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.carservice.maintenancequeue.resource.Maintenance;
+import com.carservice.maintenancequeue.resource.model.Maintenance;
 
 @Service
 public class MaintenanceQueueService {
