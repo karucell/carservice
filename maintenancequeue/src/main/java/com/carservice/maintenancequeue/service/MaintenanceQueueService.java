@@ -34,7 +34,7 @@ public class MaintenanceQueueService {
 
         Optional<Long> optEstimatedTime = maintenanceProceduresRESTClient.getEstimatedTimeForMaintenance(procedureId);
 
-        Priority priority = optEstimatedTime.map(Priority::getByEstimatedTime).orElse(Priority.LOW);
+        Priority priority = optEstimatedTime.map(Priority::getByEstimatedTime).orElse(Priority.DEFAULT);
 
         MaintenanceEntity maintenance = new MaintenanceEntity();
         maintenance.setId(null);

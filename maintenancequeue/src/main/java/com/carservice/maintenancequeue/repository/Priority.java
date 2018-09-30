@@ -18,4 +18,6 @@ public enum Priority {
                                  ? NORMAL
                                  : LOW;
     }
+
+    public static final Priority DEFAULT = LOW;
 }

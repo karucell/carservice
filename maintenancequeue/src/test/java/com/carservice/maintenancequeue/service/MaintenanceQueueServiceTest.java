@@ -8,11 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,6 +23,7 @@ import com.carservice.maintenancequeue.integration.maintenanceprocedures.Estimat
 import com.carservice.maintenancequeue.integration.maintenanceprocedures.MaintenanceProceduresRESTClient;
 import com.carservice.maintenancequeue.repository.MaintenanceEntity;
 import com.carservice.maintenancequeue.repository.MaintenanceQueueRepository;
+import com.carservice.maintenancequeue.repository.Priority;
 
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactProviderRuleMk2;
@@ -55,12 +58,46 @@ public class MaintenanceQueueServiceTest {
         maintenanceProceduresRESTClient.setPort(scheduleMockProvider.getPort());
     }
 
+    @Pact(consumer = "maintenancequeue", provider="maintenanceprocedures")
+    public RequestResponsePact pactForEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        String procedureId = "PROC1234";
+        EstimatedTime estimatedTime = new EstimatedTime(procedureId, 2400L);
+
+        return builder
+                       .given("MaintenanceProcedure with id="+procedureId+" exists")
+                       .uponReceiving("Request for estimated time of maintenance procedure")
+                       .method("GET")
+                       .path("/maintenanceprocedures/estimatedtime/"+procedureId)
+                       .willRespondWith()
+                       .status(HttpStatus.OK.value())
+                       .headers(headers)
+                       .body("{\"procedureId\":\""+procedureId+"\",\"estimatedTime\":2400}")
+                       .toPact();
+    }
+
+    @Pact(consumer = "maintenancequeue", provider="maintenanceprocedures")
+    public RequestResponsePact pactForFailedEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
+        String procedureId = "PROC1234";
+
+        return builder
+                       .given("MaintenanceProcedure with id="+procedureId+" does not exist")
+                       .uponReceiving("Request for estimated time of maintenance procedure, which ia missing")
+                       .method("GET")
+                       .path("/maintenanceprocedures/estimatedtime/"+procedureId)
+                       .willRespondWith()
+                       .status(HttpStatus.BAD_REQUEST.value())
+                       .toPact();
+    }
+
     @Test
     @PactVerification(value = "maintenanceprocedures", fragment = "pactForEstimatedTimeOfProcedure")
     public void addMaintenance() {
         // given
-        String carId = "car-1234";
-        String procedureId = "PROC-1234";
+        String carId = "car1234";
+        String procedureId = "PROC1234";
 
         // when
         String maintenanceId = maintenanceQueueService.addMaintenance(carId, procedureId);
@@ -74,36 +111,39 @@ public class MaintenanceQueueServiceTest {
         assertEquals(procedureId, stored.getProcedureId());
     }
 
-    @Pact(consumer = "maintenancequeue", provider="maintenanceprocedures")
-    public RequestResponsePact pactForEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
+    @Test
+    @PactVerification(value = "maintenanceprocedures", fragment = "pactForFailedEstimatedTimeOfProcedure")
+    public void addMaintenance_requestedProcedureIsMissing_shouldAddMaintenanceWithDefaultEstimate() {
+        // given
+        String carId = "car1234";
+        String procedureId = "PROC1234";
 
-        String procedureId = "PROC-1234";
-        EstimatedTime estimatedTime = new EstimatedTime(procedureId, 2400L);
+        // when
+        String maintenanceId = maintenanceQueueService.addMaintenance(carId, procedureId);
 
-        return builder
-                       .given("MaintenanceProcedure exists")
-                       .uponReceiving("Request for estimated time of maintenance procedure")
-                       .method("GET")
-                       //.path("/maintenanceprocedures/estimatedtime/{procedureId}")
-                       .path("/maintenanceprocedures/estimatedtime/"+procedureId)
-                       .willRespondWith()
-                       .status(200)
-                       .headers(headers)
-                       .body("{\"procedureId\":\""+procedureId+"\",\"estimatedTime\":2400}")
-                       .toPact();
+        // then
+        assertNotNull(maintenanceId);
+        // and
+        MaintenanceEntity stored = maintenanceQueueRepository.findById(maintenanceId).orElse(null);
+        assertNotNull(stored);
+        assertEquals(carId, stored.getCarId());
+        assertEquals(procedureId, stored.getProcedureId());
+        assertEquals(Priority.DEFAULT, stored.getPriority());
     }
 
+    @Ignore
     @Test
     public void startMaintenance() {
     }
 
+    @Ignore
     @Test
     public void completeMaintenance() {
     }
 
+    @Ignore
     @Test
     public void fetchMaintenances() {
     }
+
 }
