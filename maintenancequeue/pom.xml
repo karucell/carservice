@@ -77,7 +77,7 @@
                     <pactDirectory>target/pacts</pactDirectory> <!-- Defaults to ${project.build.directory}/pacts -->
                     <pactBrokerUrl>http://192.168.99.100:8080</pactBrokerUrl>
                     <projectVersion>${project.version}</projectVersion> <!-- Defaults to ${project.version} -->
-                    <trimSnapshot>true</trimSnapshot> <!-- Defaults to false -->
+                    <trimSnapshot>false</trimSnapshot> <!-- Defaults to false -->
                 </configuration>
             </plugin>
         </plugins>
