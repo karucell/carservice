@@ -1,5 +1,5 @@
 # carservice
-Demo project for investigating consumer driven contracts using Pact
+Demo project for investigating consumer driven contracts using Pact.
 
 
 Build any project:
