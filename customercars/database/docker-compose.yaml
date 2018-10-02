@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+
+  customercars-mongodb:
+    image: customercars-mongodb:0.0.1
+    ports:
+    - 27017:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: car
+      MONGO_INITDB_ROOT_PASSWORD: car
+      MONGO_INITDB_DATABASE: customercars
