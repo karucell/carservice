@@ -17,6 +17,7 @@
         <module>mechanic</module>
         <module>maintenanceprocedures</module>
         <module>maintenancequeue</module>
+        <module>ui</module>
     </modules>
 
 
