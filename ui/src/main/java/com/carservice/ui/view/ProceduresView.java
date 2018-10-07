@@ -13,6 +13,7 @@ public class ProceduresView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "procedures";
 
     public ProceduresView() {
+        setMargin(false);
         addComponent(new Label("Procedures view"));
     }
 

@@ -12,6 +12,7 @@ public class ContentArea extends VerticalLayout implements ViewDisplay {
 
     public ContentArea() {
         setSizeFull();
+        setMargin(false);
     }
 
     @Override

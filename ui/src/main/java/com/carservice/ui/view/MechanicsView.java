@@ -13,6 +13,7 @@ public class MechanicsView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "mechanics";
 
     public MechanicsView() {
+        setMargin(false);
         addComponent(new Label("Mechanics view"));
     }
 

@@ -13,6 +13,7 @@ public class HomeView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "";
 
     public HomeView() {
+        setMargin(false);
         addComponent(new Label("Home view"));
     }
 

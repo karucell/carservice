@@ -13,6 +13,7 @@ public class QueueView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "queue";
 
     public QueueView() {
+        setMargin(false);
         addComponent(new Label("Queue view"));
     }
 
