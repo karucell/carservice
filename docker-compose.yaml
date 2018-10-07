@@ -2,8 +2,8 @@ version: '3.1'
 
 services:
 
-  customercars-mongodb:
-    image: customercars-mongodb:0.0.1
+  cars-db:
+    image: car-service-cars-db:0.0.1
     ports:
     - 27017:27017
     restart: always
@@ -12,8 +12,14 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: car
       MONGO_INITDB_DATABASE: customercars
 
-  customercars-app:
-    image: customercars-app:0.0.1
+  cars-app:
+    image: car-service-cars-app:0.0.1
+    ports:
+    - 8071:8080
+    restart: always
+
+  ui:
+    image: car-service-ui-app:0.0.1
     ports:
     - 8080:8080
     restart: always

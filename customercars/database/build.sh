@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t customercars-mongodb:0.0.1 .
+docker build -t car-service-cars-db:0.0.1 .
