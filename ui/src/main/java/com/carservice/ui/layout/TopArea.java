@@ -18,11 +18,10 @@ public class TopArea extends HorizontalLayout {
     @Autowired
     public TopArea(Router router) {
         addComponent(new Label("Car Service Application"));
-        addMenuButton("Home", router.toHome);
+        addMenuButton("Queue", router.toQueue);
         addMenuButton("Cars", router.toCars);
         addMenuButton("Procedures", router.toProcedures);
         addMenuButton("Mechanics", router.toMechanics);
-        addMenuButton("Queue", router.toQueue);
 
         iterator().forEachRemaining(component -> setComponentAlignment(component, Alignment.MIDDLE_LEFT));
     }

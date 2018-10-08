@@ -13,10 +13,10 @@
 
     <modules>
         <module>common</module>
-        <module>customercars</module>
+        <module>cars</module>
         <module>mechanic</module>
-        <module>maintenanceprocedures</module>
-        <module>maintenancequeue</module>
+        <module>procedures</module>
+        <module>queue</module>
         <module>ui</module>
     </modules>
 
