@@ -16,8 +16,8 @@ import com.carservice.ui.model.CarBranch;
 public class CarsService {
 
     // TODO: move to mock rest service, and to cars microservice
-    private static final CarBranch TOYOTA = new CarBranch("111", "TOYOTA");
-    private static final CarBranch VOLKSWAGEN = new CarBranch("222", "VOLKSWAGEN");
+    public static final CarBranch TOYOTA = new CarBranch("111", "TOYOTA");
+    public static final CarBranch VOLKSWAGEN = new CarBranch("222", "VOLKSWAGEN");
 
     // TODO: move to mock rest service, and to cars microservice
     private List<CarBranch> carBranches = new ArrayList<>(Arrays.asList(TOYOTA, VOLKSWAGEN));

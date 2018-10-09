@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ProcedureInstruction {
 
     private String id;
+    private String instruction;
     private String description;
     private Long estimatedMinutes;
 

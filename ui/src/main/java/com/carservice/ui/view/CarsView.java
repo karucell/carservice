@@ -39,6 +39,7 @@ public class CarsView extends HorizontalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         updateView();
+        resetEditor();
     }
 
     private void createView() {
