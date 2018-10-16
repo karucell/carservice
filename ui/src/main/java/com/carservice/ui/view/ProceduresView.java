@@ -74,8 +74,8 @@ public class ProceduresView extends HorizontalLayout implements View {
         branchSelector = new ComboBox<>("Branch");
         branchSelector.setItemCaptionGenerator(CarBranch::getDescription);
         instructionsSelect = new TwinColSelect<>("Select Instructions");
-        instructionsSelect.setLeftColumnCaption("Selected");
         instructionsSelect.setLeftColumnCaption("Available");
+        instructionsSelect.setRightColumnCaption("Selected");
         instructionsSelect.setItemCaptionGenerator(ProcedureInstruction::getDescription);
 
         FormLayout form = new FormLayout(

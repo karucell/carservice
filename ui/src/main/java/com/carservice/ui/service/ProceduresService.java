@@ -16,10 +16,10 @@ import com.carservice.ui.model.ProcedureInstruction;
 public class ProceduresService {
 
     // TODO: move to mock rest service, and to procedures microservice
-    private static final ProcedureInstruction CHANGE_OILS = new ProcedureInstruction("PI-123", "CHANGE_OILS", "Change oils", 10L);
-    private static final ProcedureInstruction CHANGE_OIL_FILTER = new ProcedureInstruction("PI-124", "CHANGE_OIL_FILTER", "Change oil filter", 8L);
-    private static final ProcedureInstruction CHECK_BREAKS = new ProcedureInstruction("PI-125", "CHECK_BREAKS", "Check breaks", 15L);
-    private static final ProcedureInstruction CHANGE_BREAK_FLUIDS = new ProcedureInstruction("PI-126", "CHANGE_BREAK_FLUIDS", "Change break fluids", 12L);
+    public static final ProcedureInstruction CHANGE_OILS = new ProcedureInstruction("PI-123", "CHANGE_OILS", "Change oils", 10L);
+    public static final ProcedureInstruction CHANGE_OIL_FILTER = new ProcedureInstruction("PI-124", "CHANGE_OIL_FILTER", "Change oil filter", 8L);
+    public static final ProcedureInstruction CHECK_BREAKS = new ProcedureInstruction("PI-125", "CHECK_BREAKS", "Check breaks", 15L);
+    public static final ProcedureInstruction CHANGE_BREAK_FLUIDS = new ProcedureInstruction("PI-126", "CHANGE_BREAK_FLUIDS", "Change break fluids", 12L);
 
     private static final List<ProcedureInstruction> procedureInstructions = new ArrayList<>(Arrays.asList(
             CHANGE_OILS,
@@ -30,26 +30,29 @@ public class ProceduresService {
 
     // TODO: move to mock rest service, and to procedures microservice
     private static final Procedure TOYOTA_BASIC_SERVICE = new Procedure(
-            "P-123",
+            "P-111",
             "Basic service for Toyota",
             CarsService.TOYOTA,
-            Arrays.asList(
+            new ArrayList<>(Arrays.asList(
                     CHANGE_OILS,
                     CHANGE_OIL_FILTER
-            )
+            ))
     );
     private static final Procedure TOYOTA_HEAVY_SERVICE = new Procedure(
-            "P-123",
+            "P-222",
             "Heavy service for Toyota",
             CarsService.TOYOTA,
-            Arrays.asList(
+            new ArrayList<>(Arrays.asList(
                     CHANGE_OILS,
                     CHANGE_OIL_FILTER,
                     CHECK_BREAKS,
                     CHANGE_BREAK_FLUIDS
-            )
+            ))
     );
-    private static final List<Procedure> procedures = new ArrayList<>(Arrays.asList(TOYOTA_BASIC_SERVICE));
+    private static final List<Procedure> procedures = new ArrayList<>(Arrays.asList(
+            TOYOTA_BASIC_SERVICE,
+            TOYOTA_HEAVY_SERVICE
+    ));
 
     public List<Procedure> getAllProcedures() {
         return new ArrayList<>(procedures);
@@ -77,16 +80,17 @@ public class ProceduresService {
                     UUID.randomUUID().toString(),
                     procedure.getDescription(),
                     procedure.getCarBranch(),
-                    procedure.getInstructions()
+                    new ArrayList<>(procedure.getInstructions())
             );
             procedures.add(newProcedure);
             return newProcedure;
         } else {
+            // TODO: should check isPresent of getProcedureById(), if not throw exeption
             Procedure procedureToModify = getProcedureById(procedure.getId()).get();
             Objects.requireNonNull(procedureToModify);
             procedureToModify.setDescription(procedure.getDescription());
             procedureToModify.setCarBranch(procedure.getCarBranch());
-            procedureToModify.setInstructions(procedure.getInstructions());
+            procedureToModify.setInstructions(new ArrayList<>(procedure.getInstructions()));
             return procedureToModify;
         }
     }
