@@ -13,13 +13,13 @@ services:
       MONGO_INITDB_DATABASE: cars
 
   cars-app:
-    image: car-service-cars-app:0.0.1
+    image: car-service-cars:0.0.1-SNAPSHOT
     ports:
     - 9091:8080
     restart: always
 
   ui:
-    image: car-service-ui-app:0.0.1
+    image: car-service-ui:0.0.1-SNAPSHOT
     ports:
     - 9090:8080
     restart: always
