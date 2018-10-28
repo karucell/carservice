@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.service;
+package com.carservice.queue.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,27 +6,27 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.carservice.maintenancequeue.integration.procedures.ProceduresRESTClient;
-import com.carservice.maintenancequeue.repository.MaintenanceEntity;
-import com.carservice.maintenancequeue.repository.MaintenanceQueueRepository;
-import com.carservice.maintenancequeue.repository.Priority;
-import com.carservice.maintenancequeue.repository.ProgressStatus;
-import com.carservice.maintenancequeue.resource.model.Maintenance;
+import com.carservice.queue.integration.procedures.ProceduresRESTClient;
+import com.carservice.queue.repository.QueueEntity;
+import com.carservice.queue.repository.QueueRepository;
+import com.carservice.queue.repository.Priority;
+import com.carservice.queue.repository.ProgressStatus;
+import com.carservice.queue.resource.model.Maintenance;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class MaintenanceQueueService {
+public class QueueService {
 
-    private MaintenanceQueueRepository maintenanceQueueRepository;
+    private QueueRepository queueRepository;
     private ProceduresRESTClient proceduresRESTClient;
 
-    public MaintenanceQueueService(
-            MaintenanceQueueRepository maintenanceQueueRepository,
+    public QueueService(
+            QueueRepository queueRepository,
             ProceduresRESTClient proceduresRESTClient
     ) {
-        this.maintenanceQueueRepository = maintenanceQueueRepository;
+        this.queueRepository = queueRepository;
         this.proceduresRESTClient = proceduresRESTClient;
     }
 
@@ -36,7 +36,7 @@ public class MaintenanceQueueService {
 
         Priority priority = optEstimatedTime.map(Priority::getByEstimatedTime).orElse(Priority.DEFAULT);
 
-        MaintenanceEntity maintenance = new MaintenanceEntity();
+        QueueEntity maintenance = new QueueEntity();
         maintenance.setId(null);
         maintenance.setCarId(carId);
         maintenance.setProcedureId(procedureId);
@@ -46,7 +46,7 @@ public class MaintenanceQueueService {
         maintenance.setStarted(null);
         maintenance.setCompleted(null);
 
-        maintenance = maintenanceQueueRepository.save(maintenance);
+        maintenance = queueRepository.save(maintenance);
 
         return maintenance.getId();
     }

@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.repository;
+package com.carservice.queue.resource.model;
 
 public enum ProgressStatus {
     PENDING,

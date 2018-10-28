@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.resource;
+package com.carservice.queue.resource;
 
 import java.util.List;
 
@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.carservice.maintenancequeue.exceptions.InvalidEntityException;
-import com.carservice.maintenancequeue.resource.model.Maintenance;
-import com.carservice.maintenancequeue.service.MaintenanceQueueService;
+import com.carservice.queue.exceptions.InvalidEntityException;
+import com.carservice.queue.resource.model.Maintenance;
+import com.carservice.queue.service.QueueService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("")
 @Slf4j
-public class MaintenanceQueueController {
+public class QueueController {
 
-    private MaintenanceQueueService maintenanceQueueService;
+    private QueueService queueService;
 
-    public MaintenanceQueueController(MaintenanceQueueService maintenanceQueueService) {
-        this.maintenanceQueueService = maintenanceQueueService;
+    public QueueController(QueueService queueService) {
+        this.queueService = queueService;
     }
 
     @PostMapping(path = ResourcePaths.ADD_MAINTENANCE)
     public ResponseEntity<String> addMaintenance(@RequestBody Maintenance request) {
         log.info("addMaintenance: {}", request);
-        String maintenanceId = maintenanceQueueService.addMaintenance(
+        String maintenanceId = queueService.addMaintenance(
                 request.getCarId(),
                 request.getProcedureId()
         );
@@ -45,21 +45,21 @@ public class MaintenanceQueueController {
     @PutMapping(path = ResourcePaths.START_MAINTENANCE)
     public ResponseEntity<Maintenance> startMaintenance(@RequestBody String maintenanceId) {
         log.info("startMaintenance: {}", maintenanceId);
-        Maintenance maintenance = maintenanceQueueService.startMaintenance(maintenanceId);
+        Maintenance maintenance = queueService.startMaintenance(maintenanceId);
         return ResponseEntity.ok(maintenance);
     }
 
     @PutMapping(path = ResourcePaths.COMPLETE_MAINTENANCE)
     public ResponseEntity<Maintenance> completeMaintenance(@RequestBody String maintenanceId) {
         log.info("completeMaintenance: {}", maintenanceId);
-        Maintenance maintenance = maintenanceQueueService.completeMaintenance(maintenanceId);
+        Maintenance maintenance = queueService.completeMaintenance(maintenanceId);
         return ResponseEntity.ok(maintenance);
     }
 
     @GetMapping(path = ResourcePaths.FETCH_MAINTENANCES)
     public ResponseEntity<List<Maintenance>> fetchMaintenances() {
         log.info("fetchMaintenances:");
-        List<Maintenance> maintenances = maintenanceQueueService.fetchMaintenances();
+        List<Maintenance> maintenances = queueService.fetchMaintenances();
         return ResponseEntity.ok(maintenances);
     }
 

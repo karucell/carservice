@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.integration.procedures;
+package com.carservice.queue.integration.procedures;
 
 import java.util.Optional;
 import java.util.stream.Stream;

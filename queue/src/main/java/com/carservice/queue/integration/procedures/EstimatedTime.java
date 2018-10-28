@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.integration.procedures;
+package com.carservice.queue.integration.procedures;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

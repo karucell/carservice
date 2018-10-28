@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.exceptions;
+package com.carservice.queue.exceptions;
 
 public class InvalidEntityException extends RuntimeException {
 }

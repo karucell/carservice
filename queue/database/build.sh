@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t maintenancequeue-database:0.0.1 .
+docker build -t queue-database:0.0.1 .

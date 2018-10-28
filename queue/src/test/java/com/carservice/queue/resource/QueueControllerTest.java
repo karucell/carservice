@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.resource;
+package com.carservice.queue.resource;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -19,18 +19,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.carservice.common.JsonTool;
-import com.carservice.maintenancequeue.WebTestConfiguration;
-import com.carservice.maintenancequeue.exceptions.InvalidEntityException;
-import com.carservice.maintenancequeue.resource.model.Maintenance;
-import com.carservice.maintenancequeue.service.MaintenanceQueueService;
+import com.carservice.queue.WebTestConfiguration;
+import com.carservice.queue.exceptions.InvalidEntityException;
+import com.carservice.queue.resource.model.Maintenance;
+import com.carservice.queue.service.QueueService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MaintenanceQueueController.class)
+@WebMvcTest(QueueController.class)
 @ContextConfiguration(classes = WebTestConfiguration.class)
-public class MaintenanceQueueControllerTest {
+public class QueueControllerTest {
 
     @MockBean
-    private MaintenanceQueueService maintenanceQueueServiceMock;
+    private QueueService queueServiceMock;
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,7 +48,7 @@ public class MaintenanceQueueControllerTest {
         // and
         String newMaintenanceEntityId = "1112-1314A";
         // and
-        when(maintenanceQueueServiceMock.addMaintenance(
+        when(queueServiceMock.addMaintenance(
                 newMaintenance.getCarId(),
                 newMaintenance.getProcedureId())
         ).thenReturn(newMaintenanceEntityId);
@@ -64,7 +64,7 @@ public class MaintenanceQueueControllerTest {
                 .andExpect(content().string(newMaintenanceEntityId));
 
         // and
-        verify(maintenanceQueueServiceMock, times(1)).addMaintenance(carId, procedureId);
+        verify(queueServiceMock, times(1)).addMaintenance(carId, procedureId);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MaintenanceQueueControllerTest {
         // given
         Maintenance newMaintenance = new Maintenance(null, null, null, null);
         // and
-        when(maintenanceQueueServiceMock.addMaintenance(any(), any())).thenThrow(InvalidEntityException.class);
+        when(queueServiceMock.addMaintenance(any(), any())).thenThrow(InvalidEntityException.class);
         // and
         String postMessage = jsonTool.toJson(newMaintenance);
 
@@ -84,7 +84,7 @@ public class MaintenanceQueueControllerTest {
                 .andExpect(status().isUnprocessableEntity());
 
         // and
-        verify(maintenanceQueueServiceMock, times(1)).addMaintenance(any(), any());
+        verify(queueServiceMock, times(1)).addMaintenance(any(), any());
     }
 
 }

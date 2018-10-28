@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.resource.model;
+package com.carservice.queue.resource.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

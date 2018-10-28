@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.repository;
+package com.carservice.queue.repository;
 
 public enum Priority {
     HIGH(30),

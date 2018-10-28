@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.service;
+package com.carservice.queue.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,12 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.carservice.maintenancequeue.WebTestConfiguration;
-import com.carservice.maintenancequeue.integration.procedures.EstimatedTime;
-import com.carservice.maintenancequeue.integration.procedures.ProceduresRESTClient;
-import com.carservice.maintenancequeue.repository.MaintenanceEntity;
-import com.carservice.maintenancequeue.repository.MaintenanceQueueRepository;
-import com.carservice.maintenancequeue.repository.Priority;
+import com.carservice.queue.WebTestConfiguration;
+import com.carservice.queue.integration.procedures.EstimatedTime;
+import com.carservice.queue.integration.procedures.ProceduresRESTClient;
+import com.carservice.queue.repository.QueueEntity;
+import com.carservice.queue.repository.QueueRepository;
+import com.carservice.queue.repository.Priority;
 
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactProviderRuleMk2;
@@ -34,13 +34,13 @@ import au.com.dius.pact.model.RequestResponsePact;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = WebTestConfiguration.class)
-public class MaintenanceQueueServiceTest {
+public class QueueServiceTest {
 
     @Autowired
-    private MaintenanceQueueService maintenanceQueueService;
+    private QueueService queueService;
 
     @Autowired
-    private MaintenanceQueueRepository maintenanceQueueRepository;
+    private QueueRepository queueRepository;
 
     @Autowired
     private ProceduresRESTClient proceduresRESTClient;
@@ -58,7 +58,7 @@ public class MaintenanceQueueServiceTest {
         proceduresRESTClient.setPort(scheduleMockProvider.getPort());
     }
 
-    @Pact(consumer = "maintenancequeue", provider="procedures")
+    @Pact(consumer = "queue", provider="procedures")
     public RequestResponsePact pactForEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -78,7 +78,7 @@ public class MaintenanceQueueServiceTest {
                        .toPact();
     }
 
-    @Pact(consumer = "maintenancequeue", provider="procedures")
+    @Pact(consumer = "queue", provider="procedures")
     public RequestResponsePact pactForFailedEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
         String procedureId = "PROC1234";
 
@@ -100,12 +100,12 @@ public class MaintenanceQueueServiceTest {
         String procedureId = "PROC1234";
 
         // when
-        String maintenanceId = maintenanceQueueService.addMaintenance(carId, procedureId);
+        String maintenanceId = queueService.addMaintenance(carId, procedureId);
 
         // then
         assertNotNull(maintenanceId);
         // and
-        MaintenanceEntity stored = maintenanceQueueRepository.findById(maintenanceId).orElse(null);
+        QueueEntity stored = queueRepository.findById(maintenanceId).orElse(null);
         assertNotNull(stored);
         assertEquals(carId, stored.getCarId());
         assertEquals(procedureId, stored.getProcedureId());
@@ -119,12 +119,12 @@ public class MaintenanceQueueServiceTest {
         String procedureId = "PROC1234";
 
         // when
-        String maintenanceId = maintenanceQueueService.addMaintenance(carId, procedureId);
+        String maintenanceId = queueService.addMaintenance(carId, procedureId);
 
         // then
         assertNotNull(maintenanceId);
         // and
-        MaintenanceEntity stored = maintenanceQueueRepository.findById(maintenanceId).orElse(null);
+        QueueEntity stored = queueRepository.findById(maintenanceId).orElse(null);
         assertNotNull(stored);
         assertEquals(carId, stored.getCarId());
         assertEquals(procedureId, stored.getProcedureId());

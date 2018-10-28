@@ -1,8 +1,8 @@
-package com.carservice.maintenancequeue.resource;
+package com.carservice.queue.resource;
 
 public class ResourcePaths {
 
-    private static final String ROOT = "/maintenancequeue";
+    private static final String ROOT = "/queue";
 
     public static final String ADD_MAINTENANCE = ROOT+"/add";
     public static final String START_MAINTENANCE = ROOT+"/start/{maintenanceId}";

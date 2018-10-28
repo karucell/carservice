@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.repository;
+package com.carservice.queue.repository;
 
 import java.time.LocalDateTime;
 
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "maintenance")
-public class MaintenanceEntity {
+@Document(collection = "queue")
+public class QueueEntity {
 
     @Id
     public String id;
