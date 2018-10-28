@@ -1,4 +1,4 @@
-package com.carservice.maintenancequeue.integration.maintenanceprocedures;
+package com.carservice.maintenancequeue.integration.procedures;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class MaintenanceProceduresRESTClient {
+public class ProceduresRESTClient {
 
     private int port;
 
@@ -23,7 +23,7 @@ public class MaintenanceProceduresRESTClient {
     public Optional<Long> getEstimatedTimeForMaintenance(String procedureId) {
         RestTemplate restTemplate = new RestTemplateBuilder().build();
 
-        String url = String.format("http://%s:%s/maintenanceprocedures/estimatedtime/%s", "localhost", port, procedureId);
+        String url = String.format("http://%s:%s/procedures/estimatedtime/%s", "localhost", port, procedureId);
 
         try {
             ResponseEntity<EstimatedTime> response = restTemplate.getForEntity(url, EstimatedTime.class);

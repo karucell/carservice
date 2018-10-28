@@ -19,8 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.carservice.maintenancequeue.WebTestConfiguration;
-import com.carservice.maintenancequeue.integration.maintenanceprocedures.EstimatedTime;
-import com.carservice.maintenancequeue.integration.maintenanceprocedures.MaintenanceProceduresRESTClient;
+import com.carservice.maintenancequeue.integration.procedures.EstimatedTime;
+import com.carservice.maintenancequeue.integration.procedures.ProceduresRESTClient;
 import com.carservice.maintenancequeue.repository.MaintenanceEntity;
 import com.carservice.maintenancequeue.repository.MaintenanceQueueRepository;
 import com.carservice.maintenancequeue.repository.Priority;
@@ -43,11 +43,11 @@ public class MaintenanceQueueServiceTest {
     private MaintenanceQueueRepository maintenanceQueueRepository;
 
     @Autowired
-    private MaintenanceProceduresRESTClient maintenanceProceduresRESTClient;
+    private ProceduresRESTClient proceduresRESTClient;
 
     @Rule
     public PactProviderRuleMk2 scheduleMockProvider = new PactProviderRuleMk2(
-            "maintenanceprocedures",
+            "procedures",
             "localhost",
             org.springframework.util.SocketUtils.findAvailableTcpPort(),
             this
@@ -55,10 +55,10 @@ public class MaintenanceQueueServiceTest {
 
     @Before
     public void setup() {
-        maintenanceProceduresRESTClient.setPort(scheduleMockProvider.getPort());
+        proceduresRESTClient.setPort(scheduleMockProvider.getPort());
     }
 
-    @Pact(consumer = "maintenancequeue", provider="maintenanceprocedures")
+    @Pact(consumer = "maintenancequeue", provider="procedures")
     public RequestResponsePact pactForEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
@@ -67,10 +67,10 @@ public class MaintenanceQueueServiceTest {
         EstimatedTime estimatedTime = new EstimatedTime(procedureId, 2400L);
 
         return builder
-                       .given("MaintenanceProcedure with id="+procedureId+" exists")
+                       .given("Procedure with id="+procedureId+" exists")
                        .uponReceiving("Request for estimated time of maintenance procedure")
                        .method("GET")
-                       .path("/maintenanceprocedures/estimatedtime/"+procedureId)
+                       .path("/procedures/estimatedtime/"+procedureId)
                        .willRespondWith()
                        .status(HttpStatus.OK.value())
                        .headers(headers)
@@ -78,22 +78,22 @@ public class MaintenanceQueueServiceTest {
                        .toPact();
     }
 
-    @Pact(consumer = "maintenancequeue", provider="maintenanceprocedures")
+    @Pact(consumer = "maintenancequeue", provider="procedures")
     public RequestResponsePact pactForFailedEstimatedTimeOfProcedure(PactDslWithProvider builder) throws IOException {
         String procedureId = "PROC1234";
 
         return builder
-                       .given("MaintenanceProcedure with id="+procedureId+" does not exist")
+                       .given("Procedure with id="+procedureId+" does not exist")
                        .uponReceiving("Request for estimated time of maintenance procedure, which ia missing")
                        .method("GET")
-                       .path("/maintenanceprocedures/estimatedtime/"+procedureId)
+                       .path("/procedures/estimatedtime/"+procedureId)
                        .willRespondWith()
                        .status(HttpStatus.BAD_REQUEST.value())
                        .toPact();
     }
 
     @Test
-    @PactVerification(value = "maintenanceprocedures", fragment = "pactForEstimatedTimeOfProcedure")
+    @PactVerification(value = "procedures", fragment = "pactForEstimatedTimeOfProcedure")
     public void addMaintenance() {
         // given
         String carId = "car1234";
@@ -112,7 +112,7 @@ public class MaintenanceQueueServiceTest {
     }
 
     @Test
-    @PactVerification(value = "maintenanceprocedures", fragment = "pactForFailedEstimatedTimeOfProcedure")
+    @PactVerification(value = "procedures", fragment = "pactForFailedEstimatedTimeOfProcedure")
     public void addMaintenance_requestedProcedureIsMissing_shouldAddMaintenanceWithDefaultEstimate() {
         // given
         String carId = "car1234";

@@ -1,4 +1,4 @@
-package com.carservice.maintenanceprocedures.resource;
+package com.carservice.procedures.resource;
 
 import static org.mockito.Mockito.when;
 
@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.carservice.maintenanceprocedures.service.MaintenanceProcedureService;
+import com.carservice.procedures.service.ProcedureService;
 
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
@@ -22,17 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Provider("maintenanceprocedures")
+@Provider("procedures")
 @PactBroker(
         host = "192.168.99.100",
         port = "8080",
         protocol = "http"
 )
 @Slf4j
-class MaintenanceProcedureControllerTest {
+class ProcedureControllerTest {
 
     @MockBean
-    MaintenanceProcedureService maintenanceProcedureService;
+    ProcedureService procedureService;
 
     private int port;
 
@@ -53,18 +53,18 @@ class MaintenanceProcedureControllerTest {
         context.verifyInteraction();
     }
 
-    @State({"MaintenanceProcedure with id=PROC1234 exists"})
-    public void stateMaintenanceProcedureWithIdExists() {
+    @State({"Procedure with id=PROC1234 exists"})
+    public void stateProcedureWithIdExists() {
         String procedureId = "PROC1234";
         Long estimatedTime = 2400L;
-        when(maintenanceProcedureService.getTotalTimeEstimation(procedureId)).thenReturn(estimatedTime);
+        when(procedureService.getTotalTimeEstimation(procedureId)).thenReturn(estimatedTime);
     }
 
-    @State({"MaintenanceProcedure with id=PROC1234 does not exist"})
-    public void stateMaintenanceProcedureWithIdDoesNotExist() {
+    @State({"Procedure with id=PROC1234 does not exist"})
+    public void stateProcedureWithIdDoesNotExist() {
         String procedureId = "PROC1234";
         Long estimatedTime = null;
-        when(maintenanceProcedureService.getTotalTimeEstimation(procedureId)).thenReturn(estimatedTime);
+        when(procedureService.getTotalTimeEstimation(procedureId)).thenReturn(estimatedTime);
     }
 
 }

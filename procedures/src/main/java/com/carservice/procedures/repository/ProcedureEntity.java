@@ -1,4 +1,4 @@
-package com.carservice.maintenanceprocedures.repository;
+package com.carservice.procedures.repository;
 
 import java.util.List;
 

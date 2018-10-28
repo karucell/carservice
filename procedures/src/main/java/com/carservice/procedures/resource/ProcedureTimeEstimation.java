@@ -1,4 +1,4 @@
-package com.carservice.maintenanceprocedures.resource;
+package com.carservice.procedures.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

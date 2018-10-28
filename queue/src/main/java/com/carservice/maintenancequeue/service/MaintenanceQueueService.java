@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.carservice.maintenancequeue.integration.maintenanceprocedures.MaintenanceProceduresRESTClient;
+import com.carservice.maintenancequeue.integration.procedures.ProceduresRESTClient;
 import com.carservice.maintenancequeue.repository.MaintenanceEntity;
 import com.carservice.maintenancequeue.repository.MaintenanceQueueRepository;
 import com.carservice.maintenancequeue.repository.Priority;
@@ -20,19 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 public class MaintenanceQueueService {
 
     private MaintenanceQueueRepository maintenanceQueueRepository;
-    private MaintenanceProceduresRESTClient maintenanceProceduresRESTClient;
+    private ProceduresRESTClient proceduresRESTClient;
 
     public MaintenanceQueueService(
             MaintenanceQueueRepository maintenanceQueueRepository,
-            MaintenanceProceduresRESTClient maintenanceProceduresRESTClient
+            ProceduresRESTClient proceduresRESTClient
     ) {
         this.maintenanceQueueRepository = maintenanceQueueRepository;
-        this.maintenanceProceduresRESTClient = maintenanceProceduresRESTClient;
+        this.proceduresRESTClient = proceduresRESTClient;
     }
 
     public String addMaintenance(String carId, String procedureId) {
 
-        Optional<Long> optEstimatedTime = maintenanceProceduresRESTClient.getEstimatedTimeForMaintenance(procedureId);
+        Optional<Long> optEstimatedTime = proceduresRESTClient.getEstimatedTimeForMaintenance(procedureId);
 
         Priority priority = optEstimatedTime.map(Priority::getByEstimatedTime).orElse(Priority.DEFAULT);
 

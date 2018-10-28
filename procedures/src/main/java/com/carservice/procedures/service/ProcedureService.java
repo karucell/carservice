@@ -1,9 +1,9 @@
-package com.carservice.maintenanceprocedures.service;
+package com.carservice.procedures.service;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class MaintenanceProcedureService {
+public class ProcedureService {
 
     public Long getTotalTimeEstimation(String procedureId) {
         return 300L;
