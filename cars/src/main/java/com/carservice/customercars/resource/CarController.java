@@ -31,12 +31,24 @@ import lombok.extern.slf4j.Slf4j;
 public class CarController {
 
     private CarService carService;
+    private Function<String, Supplier<String>> nullParameterSupplier = field -> () -> String.format("Missing field: %s", field);
 
     public CarController(CarService carService) {
         this.carService = carService;
     }
 
-    private Function<String, Supplier<String>> nullParameterSupplier = field -> () -> String.format("Missing field: %s", field);
+    @GetMapping("/cars")
+    public ResponseEntity<List<Car>> findAllCars() {
+
+        List<CarEntity> carEntities = carService.findAllCars();
+
+        List<Car> cars = carEntities
+                                 .stream()
+                                 .map(Car::toCar)
+                                 .collect(Collectors.toList());
+
+        return ResponseEntity.ok(cars);
+    }
 
     @GetMapping("/cars/regnumber/{regnumber}")
     public ResponseEntity<Car> findCarByRegNumber(@PathVariable("regnumber") String regNumber) {

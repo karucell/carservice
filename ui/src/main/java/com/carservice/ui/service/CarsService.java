@@ -6,22 +6,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.carservice.ui.integration.CarDTO;
+import com.carservice.ui.integration.CarsClient;
 import com.carservice.ui.model.Car;
 import com.carservice.ui.model.CarBranch;
 
 @Component
 public class CarsService {
 
-    // TODO: move to mock rest service, and to cars microservice
+    // TODO: move to mock rest service, and to carsHostWithPath microservice
     public static final CarBranch TOYOTA = new CarBranch("111", "TOYOTA");
     public static final CarBranch VOLKSWAGEN = new CarBranch("222", "VOLKSWAGEN");
 
-    // TODO: move to mock rest service, and to cars microservice
+    // TODO: move to mock rest service, and to carsHostWithPath microservice
     private List<CarBranch> carBranches = new ArrayList<>(Arrays.asList(TOYOTA, VOLKSWAGEN));
-    // TODO: move to mock rest service, and to cars microservice
+    // TODO: move to mock rest service, and to carsHostWithPath microservice
     private List<Car> cars = new ArrayList<>(Arrays.asList(
             new Car("1234" ,"ABC-123", "Jaakko Mäkynen", TOYOTA),
             new Car("2345" ,"AAA-111", "Raimo Kinnunen", TOYOTA),
@@ -29,12 +32,20 @@ public class CarsService {
             new Car("4567" ,"DEF-456", "Jukka Kuustonen", VOLKSWAGEN)
     ));
 
+    private CarsClient carsClient;
+
+    public CarsService(CarsClient carsClient) {
+        this.carsClient = carsClient;
+    }
+
     public List<CarBranch> getAllCarBrances() {
         return new ArrayList<>(carBranches);
     }
 
     public List<Car> getAllCars() {
-        return new ArrayList<>(cars);
+        return carsClient.fetchAllCars().stream()
+                .map(CarDTO::toCar)
+                .collect(Collectors.toList());
     }
 
     public Optional<Car> getCarById(String id) {

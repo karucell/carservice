@@ -17,9 +17,14 @@ services:
     ports:
     - 8071:8080
     restart: always
+    environment:
+      CAR_SERVICE_HOST: 192.168.99.100
 
   ui:
     image: car-service-ui-app:0.0.1
     ports:
     - 8080:8080
     restart: always
+    environment:
+      CAR_SERVICE_HOST: 192.168.99.100
+      CAR_SERVICE_CARS_PORT: 8071

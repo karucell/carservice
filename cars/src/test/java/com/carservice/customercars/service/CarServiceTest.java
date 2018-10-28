@@ -2,8 +2,10 @@ package com.carservice.customercars.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -25,6 +27,19 @@ public class CarServiceTest {
 
     @Autowired
     CarRepository carRepository;
+
+    @Test
+    public void findAllCars_shouldReturnAllCars() {
+        String anyValidCarRegNumber = "AAA-111";
+        CarEntity existingCar = new CarEntity(null, anyValidCarRegNumber, Brand.TOYOTA, "AnyValidOwner");
+        carRepository.save(existingCar);
+        long carCount = carRepository.count();
+
+        List<CarEntity> cars = carService.findAllCars();
+
+        assertNotNull(cars);
+        assertEquals(carCount, cars.size());
+    }
 
     @Test
     public void findCarByRegNumber_withNonExistingRegNumber_shouldReturnEmptyOptional() {

@@ -18,6 +18,10 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
+    public List<CarEntity> findAllCars() {
+        return carRepository.findAll();
+    }
+
     public Optional<CarEntity> findCarByRegNumber(String regNumber) {
         return carRepository.findCarByRegNumber(regNumber);
     }
