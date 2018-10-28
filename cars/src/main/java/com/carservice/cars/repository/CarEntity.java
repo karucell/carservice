@@ -1,4 +1,4 @@
-package com.carservice.customercars.repository;
+package com.carservice.cars.repository;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

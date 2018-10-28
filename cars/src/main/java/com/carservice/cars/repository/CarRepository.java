@@ -1,4 +1,4 @@
-package com.carservice.customercars.repository;
+package com.carservice.cars.repository;
 
 import java.util.List;
 import java.util.Optional;

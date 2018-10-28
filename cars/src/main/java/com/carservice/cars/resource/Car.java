@@ -1,6 +1,6 @@
-package com.carservice.customercars.resource;
+package com.carservice.cars.resource;
 
-import com.carservice.customercars.repository.CarEntity;
+import com.carservice.cars.repository.CarEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

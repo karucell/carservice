@@ -10,7 +10,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: car
       MONGO_INITDB_ROOT_PASSWORD: car
-      MONGO_INITDB_DATABASE: customercars
+      MONGO_INITDB_DATABASE: cars
 
   cars-app:
     image: car-service-cars-app:0.0.1

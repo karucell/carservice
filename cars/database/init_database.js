@@ -6,19 +6,19 @@ let res = [
         regNumber: 'ABC-123',
         brand: 'TOYOTA',
         ownerName: 'Sami Laakso',
-        _class: 'com.carservice.customercars.repository.CarEntity'
+        _class: 'com.carservice.cars.repository.CarEntity'
     }),
     db.cars.save({
         regNumber: 'TZR-125',
         brand: 'VOLVO',
         ownerName: 'Mikko Peltola',
-        _class: 'com.carservice.customercars.repository.CarEntity'
+        _class: 'com.carservice.cars.repository.CarEntity'
     }),
     db.cars.save({
         regNumber: 'GPE-539',
         brand: 'VOLKSWAGEN',
         ownerName: 'Jarno Lahti',
-        _class: 'com.carservice.customercars.repository.CarEntity'
+        _class: 'com.carservice.cars.repository.CarEntity'
     }),
 ];
 

@@ -1,13 +1,13 @@
-package com.carservice.customercars.service;
+package com.carservice.cars.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.carservice.customercars.repository.Brand;
-import com.carservice.customercars.repository.CarEntity;
-import com.carservice.customercars.repository.CarRepository;
+import com.carservice.cars.repository.Brand;
+import com.carservice.cars.repository.CarEntity;
+import com.carservice.cars.repository.CarRepository;
 
 @Service
 public class CarService {

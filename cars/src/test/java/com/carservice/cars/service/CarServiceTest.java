@@ -1,4 +1,4 @@
-package com.carservice.customercars.service;
+package com.carservice.cars.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.carservice.customercars.repository.Brand;
-import com.carservice.customercars.repository.CarEntity;
-import com.carservice.customercars.repository.CarRepository;
+import com.carservice.cars.repository.Brand;
+import com.carservice.cars.repository.CarEntity;
+import com.carservice.cars.repository.CarRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

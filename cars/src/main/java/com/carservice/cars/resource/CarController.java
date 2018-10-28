@@ -1,4 +1,4 @@
-package com.carservice.customercars.resource;
+package com.carservice.cars.resource;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.carservice.customercars.exceptions.EntityNotFoundException;
-import com.carservice.customercars.repository.Brand;
-import com.carservice.customercars.repository.CarEntity;
-import com.carservice.customercars.service.CarService;
+import com.carservice.cars.exceptions.EntityNotFoundException;
+import com.carservice.cars.repository.Brand;
+import com.carservice.cars.repository.CarEntity;
+import com.carservice.cars.service.CarService;
 
 import lombok.extern.slf4j.Slf4j;
 
