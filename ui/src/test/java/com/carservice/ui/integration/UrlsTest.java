@@ -1,21 +1,21 @@
 package com.carservice.ui.integration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class UrlsTest {
+class UrlsTest {
 
     private Urls urls;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         urls = new Urls();
     }
 
     @Test
-    public void carsHostWithPath_withHostAndPortSet_shouldReturnProperUrl() {
+    void carsHostWithPath_withHostAndPortSet_shouldReturnProperUrl() {
         urls.setHost("host");
         urls.setCarsPort("1234");
 
@@ -25,7 +25,7 @@ public class UrlsTest {
     }
 
     @Test
-    public void carsHostWithPath_withExtraSlashInPath_shouldStripExtraSlash() {
+    void carsHostWithPath_withExtraSlashInPath_shouldStripExtraSlash() {
         urls.setHost("host");
         urls.setCarsPort("1234");
 

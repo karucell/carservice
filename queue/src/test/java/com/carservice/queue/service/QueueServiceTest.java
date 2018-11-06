@@ -1,37 +1,37 @@
 package com.carservice.queue.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.carservice.queue.WebTestConfiguration;
 import com.carservice.queue.integration.procedures.EstimatedTime;
 import com.carservice.queue.integration.procedures.ProceduresRESTClient;
+import com.carservice.queue.repository.Priority;
 import com.carservice.queue.repository.QueueEntity;
 import com.carservice.queue.repository.QueueRepository;
-import com.carservice.queue.repository.Priority;
 
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.model.RequestResponsePact;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+@ExtendWith(PactConsumerTestExt.class)
 @SpringBootTest
 @ContextConfiguration(classes = WebTestConfiguration.class)
 public class QueueServiceTest {
@@ -45,17 +45,9 @@ public class QueueServiceTest {
     @Autowired
     private ProceduresRESTClient proceduresRESTClient;
 
-    @Rule
-    public PactProviderRuleMk2 scheduleMockProvider = new PactProviderRuleMk2(
-            "procedures",
-            "localhost",
-            org.springframework.util.SocketUtils.findAvailableTcpPort(),
-            this
-    );
-
-    @Before
-    public void setup() {
-        proceduresRESTClient.setPort(scheduleMockProvider.getPort());
+    @BeforeEach
+    void setup(MockServer mockServer) {
+        proceduresRESTClient.setPort(mockServer.getPort());
     }
 
     @Pact(consumer = "queue", provider="procedures")
@@ -93,8 +85,8 @@ public class QueueServiceTest {
     }
 
     @Test
-    @PactVerification(value = "procedures", fragment = "pactForEstimatedTimeOfProcedure")
-    public void addMaintenance() {
+    @PactTestFor(providerName = "procedures", pactMethod = "pactForEstimatedTimeOfProcedure")
+    void addMaintenance(MockServer mockServer) {
         // given
         String carId = "car1234";
         String procedureId = "PROC1234";
@@ -112,8 +104,8 @@ public class QueueServiceTest {
     }
 
     @Test
-    @PactVerification(value = "procedures", fragment = "pactForFailedEstimatedTimeOfProcedure")
-    public void addMaintenance_requestedProcedureIsMissing_shouldAddMaintenanceWithDefaultEstimate() {
+    @PactTestFor(providerName = "procedures", pactMethod = "pactForFailedEstimatedTimeOfProcedure")
+    public void addMaintenance_requestedProcedureIsMissing_shouldAddMaintenanceWithDefaultEstimate(MockServer mockServer) {
         // given
         String carId = "car1234";
         String procedureId = "PROC1234";
@@ -131,19 +123,16 @@ public class QueueServiceTest {
         assertEquals(Priority.DEFAULT, stored.getPriority());
     }
 
-    @Ignore
-    @Test
-    public void startMaintenance() {
-    }
+//    @Test
+//    public void startMaintenance() {
+//    }
 
-    @Ignore
-    @Test
-    public void completeMaintenance() {
-    }
+//    @Test
+//    public void completeMaintenance() {
+//    }
 
-    @Ignore
-    @Test
-    public void fetchMaintenances() {
-    }
+//    @Test
+//    public void fetchMaintenances() {
+//    }
 
 }

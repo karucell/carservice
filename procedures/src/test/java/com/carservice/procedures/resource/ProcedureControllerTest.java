@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Provider("procedures")
 @PactBroker(
-        host = "192.168.99.100",
+        host = "localdocker",
         port = "8080",
         protocol = "http"
 )

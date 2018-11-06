@@ -37,19 +37,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>au.com.dius</groupId>
-            <artifactId>pact-jvm-consumer-junit_2.11</artifactId>
-            <version>3.5.0</version>
+            <artifactId>pact-jvm-consumer-junit5_2.12</artifactId>
+            <version>3.5.23</version>
             <scope>test</scope>
         </dependency>
 
@@ -67,7 +62,7 @@
                 <version>3.5.11</version>
                 <configuration>
                     <pactDirectory>target/pacts</pactDirectory> <!-- Defaults to ${project.build.directory}/pacts -->
-                    <pactBrokerUrl>http://192.168.99.100:8080</pactBrokerUrl>
+                    <pactBrokerUrl>http://localdocker:8080</pactBrokerUrl>
                     <projectVersion>${project.version}</projectVersion> <!-- Defaults to ${project.version} -->
                     <trimSnapshot>false</trimSnapshot> <!-- Defaults to false -->
                 </configuration>
