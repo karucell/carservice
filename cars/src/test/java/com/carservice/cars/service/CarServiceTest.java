@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +36,7 @@ public class CarServiceTest {
         carRepository.save(existingCar);
         long carCount = carRepository.count();
 
-        List<CarEntity> cars = carService.findAllCars();
+        List<CarEntity> cars = carService.findAllCars().collect(Collectors.toList());
 
         assertNotNull(cars);
         assertEquals(carCount, cars.size());
@@ -45,9 +46,9 @@ public class CarServiceTest {
     public void findCarByRegNumber_withNonExistingRegNumber_shouldReturnEmptyOptional() {
         String anyNonExistingRegNumber = "AABBCC123";
 
-        Optional<CarEntity> optCar = carService.findCarByRegNumber(anyNonExistingRegNumber);
+        Optional<CarEntity> car = carService.findCarByRegNumber(anyNonExistingRegNumber);
 
-        assertFalse(optCar.isPresent());
+        assertFalse(car.isPresent());
     }
 
     @Test
@@ -56,11 +57,11 @@ public class CarServiceTest {
         CarEntity existingCar = new CarEntity(null, existingCarRegNumber, Brand.TOYOTA, "AnyValidOwner");
         existingCar = carRepository.save(existingCar);
 
-        Optional<CarEntity> optCar = carService.findCarByRegNumber(existingCarRegNumber);
+        Optional<CarEntity> car = carService.findCarByRegNumber(existingCarRegNumber);
 
-        assertTrue(optCar.isPresent());
-        assertEquals(existingCar.getId(), optCar.get().getId());
-        assertEquals(existingCar.getRegNumber(), optCar.get().getRegNumber());
+        assertTrue(car.isPresent());
+        assertEquals(existingCar.getId(), car.get().getId());
+        assertEquals(existingCar.getRegNumber(), car.get().getRegNumber());
     }
 
     @Test

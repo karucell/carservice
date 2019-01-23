@@ -1,10 +1,11 @@
 package com.carservice.cars.service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
+import com.carservice.cars.common.CarMapper;
 import com.carservice.cars.repository.Brand;
 import com.carservice.cars.repository.CarEntity;
 import com.carservice.cars.repository.CarRepository;
@@ -12,14 +13,19 @@ import com.carservice.cars.repository.CarRepository;
 @Service
 public class CarService {
 
+    private CarMapper carMapper;
     private CarRepository carRepository;
 
-    public CarService(CarRepository carRepository) {
+    public CarService(
+            CarMapper carMapper,
+            CarRepository carRepository
+    ) {
+        this.carMapper = carMapper;
         this.carRepository = carRepository;
     }
 
-    public List<CarEntity> findAllCars() {
-        return carRepository.findAll();
+    public Stream<CarEntity> findAllCars() {
+        return carRepository.findAll().stream();
     }
 
     public Optional<CarEntity> findCarByRegNumber(String regNumber) {
@@ -30,17 +36,15 @@ public class CarService {
         return carRepository.findCarByOwnerName(ownerName);
     }
 
-    public List<CarEntity> findCarsByBrand(Brand brand) {
-        return carRepository.findAllByBrand(brand);
+    public Stream<CarEntity> findCarsByBrand(Brand brand) {
+        return carRepository.findAllByBrand(brand).stream();
     }
 
-    public String addCar(String regNumber, String brandName, String ownerName) {
-        CarEntity car = new CarEntity();
-        car.setRegNumber(regNumber);
-        car.setBrand(Brand.valueOf(brandName));
-        car.setOwnerName(ownerName);
-        car = carRepository.save(car);
-        return car.getId();
+    public String addCar(CarEntity carEntity) {
+        CarEntity newCarEntity = new CarEntity();
+        carMapper.updateCarFromEntity(newCarEntity, carEntity);
+        carEntity = carRepository.save(newCarEntity);
+        return carEntity.getId();
     }
 
 }

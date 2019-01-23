@@ -2,7 +2,6 @@ package com.carservice.cars.resource;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carservice.cars.common.CarMapper;
 import com.carservice.cars.exceptions.EntityNotFoundException;
 import com.carservice.cars.repository.Brand;
 import com.carservice.cars.repository.CarEntity;
@@ -30,66 +30,66 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CarController {
 
-    private CarService carService;
     private Function<String, Supplier<String>> nullParameterSupplier = field -> () -> String.format("Missing field: %s", field);
+    private CarService carService;
+    private CarMapper carMapper;
 
-    public CarController(CarService carService) {
+
+    public CarController(CarService carService, CarMapper carMapper) {
         this.carService = carService;
+        this.carMapper = carMapper;
     }
 
     @GetMapping("/cars")
-    public ResponseEntity<List<Car>> findAllCars() {
-
-        List<CarEntity> carEntities = carService.findAllCars();
-
-        List<Car> cars = carEntities
-                                 .stream()
-                                 .map(Car::toCar)
-                                 .collect(Collectors.toList());
-
+    public ResponseEntity<List<CarDto>> findAllCars() {
+        List<CarDto> cars = carService
+                                    .findAllCars()
+                                    .map(carMapper::toCarDto)
+                                    .collect(Collectors.toList());
         return ResponseEntity.ok(cars);
     }
 
     @GetMapping("/cars/regnumber/{regnumber}")
-    public ResponseEntity<Car> findCarByRegNumber(@PathVariable("regnumber") String regNumber) {
+    public ResponseEntity<CarDto> findCarByRegNumber(@PathVariable("regnumber") String regNumber) {
         Objects.requireNonNull(regNumber, nullParameterSupplier.apply("regNumber"));
 
-        Optional<CarEntity> optCarEntity = carService.findCarByRegNumber(regNumber);
-
-        return optCarEntity
-                       .map(Car::toCar)
+        return carService
+                       .findCarByRegNumber(regNumber)
+                       .map(carMapper::toCarDto)
                        .map(ResponseEntity::ok)
                        .orElseThrow(() -> new EntityNotFoundException(regNumber));
     }
 
     @GetMapping("/cars/ownername/{ownername}")
-    public ResponseEntity<Car> findCarByOwnerName(@PathVariable String ownerName) {
+    public ResponseEntity<CarDto> findCarByOwnerName(@PathVariable String ownerName) {
         Objects.requireNonNull(ownerName, nullParameterSupplier.apply("ownerName"));
 
-        Optional<CarEntity> optCarEntity = carService.findCarByOwnerName(ownerName);
-        return optCarEntity
-                       .map(Car::toCar)
+        return carService
+                       .findCarByOwnerName(ownerName)
+                       .map(carMapper::toCarDto)
                        .map(ResponseEntity::ok)
                        .orElseThrow(() -> new EntityNotFoundException(ownerName));
     }
 
     @GetMapping("/cars/brand/{brand}")
-    public ResponseEntity<List<Car>> findCarByBrand(@PathVariable String brand) {
+    public ResponseEntity<List<CarDto>> findCarByBrand(@PathVariable String brand) {
         Objects.requireNonNull(brand, nullParameterSupplier.apply("brand"));
 
-        List<CarEntity> carEntities = carService.findCarsByBrand(Brand.valueOf(brand));
-        List<Car> cars = carEntities
-                                 .stream()
-                                 .map(Car::toCar)
-                                 .collect(Collectors.toList());
+        List<CarDto> cars = carService
+                                    .findCarsByBrand(Brand.valueOf(brand))
+                                    .map(carMapper::toCarDto)
+                                    .collect(Collectors.toList());
         return ResponseEntity.ok(cars);
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<String> addCar(@RequestBody Car car) {
-        Objects.requireNonNull(car, nullParameterSupplier.apply("car"));
+    public ResponseEntity<String> addCar(@RequestBody CarDto carDto) {
+        Objects.requireNonNull(carDto, nullParameterSupplier.apply("car"));
 
-        String newCarId = carService.addCar(car.getRegNumber(), car.getBrand(), car.getOwnerName());
+        CarEntity newCarEntity = new CarEntity();
+        carMapper.updateCarFromDto(carDto, newCarEntity);
+
+        String newCarId = carService.addCar(newCarEntity);
 
         return ResponseEntity.ok(newCarId);
     }
